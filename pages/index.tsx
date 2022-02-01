@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Character, GetCharacterResults } from "../types";
 import styles from "../styles/Home.module.css";
 import imageLoader from "../imageLoader";
+import Link from "next/link";
 
 const Home: NextPage<{ characters: Character[] }> = ({ characters }) => {
   return (
@@ -16,7 +17,11 @@ const Home: NextPage<{ characters: Character[] }> = ({ characters }) => {
       {characters.map((character) => {
         return (
           <div key={character.id}>
-            {character.name}
+            <Link href={`/characters/${character.id}`}>
+              <a>
+                <h3>{character.name}</h3>
+              </a>
+            </Link>
             <Image
               loader={imageLoader}
               unoptimized
