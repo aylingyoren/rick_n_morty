@@ -1,13 +1,24 @@
-import "../styles/globals.css";
+import { NextPage } from "next";
 import type { AppProps } from "next/app";
+import { ReactElement, ReactNode } from "react";
+import "../styles/globals.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      I wrap everything
-      <Component {...pageProps} />
-    </>
-  );
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+  return getLayout(<Component {...pageProps} />);
+  // return (
+  //   <Layout>
+  //     <Component {...pageProps} />
+  //   </Layout>
+  // );
 }
 
 export default MyApp;

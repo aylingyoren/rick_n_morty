@@ -4,8 +4,12 @@ import Image from "next/image";
 import { Character, GetCharacterResults } from "../types";
 import styles from "../styles/Home.module.css";
 import imageLoader from "../imageLoader";
+import Link from "next/link";
+import Layout from "../components/Layout";
 
-const Home: NextPage<{ characters: Character[] }> = ({ characters }) => {
+// const Home: NextPage<{ characters: Character[] }> = ({ characters }) => {...};
+
+function Home({ characters }: { characters: Character[] }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -16,7 +20,11 @@ const Home: NextPage<{ characters: Character[] }> = ({ characters }) => {
       {characters.map((character) => {
         return (
           <div key={character.id}>
-            {character.name}
+            <Link href={`/characters/${character.id}`}>
+              <a>
+                <h3>{character.name}</h3>
+              </a>
+            </Link>
             <Image
               loader={imageLoader}
               unoptimized
@@ -30,6 +38,10 @@ const Home: NextPage<{ characters: Character[] }> = ({ characters }) => {
       })}
     </div>
   );
+}
+
+Home.getLayout = function getLayout(page: typeof Home) {
+  return <Layout>{page}</Layout>;
 };
 
 export const getStaticProps: GetStaticProps = async (context: any) => {
